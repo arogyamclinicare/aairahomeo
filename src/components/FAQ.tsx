@@ -20,11 +20,11 @@ const faqs = [
   },
   {
     question: 'What should I expect during my first consultation?',
-    answer: 'Your first consultation will typically last 60-90 minutes. Dr. Mitchell will take a detailed case history including your physical symptoms, emotional state, lifestyle, family medical history, and overall constitution. This comprehensive approach helps in selecting the most appropriate remedy for you. Subsequent follow-up consultations are usually shorter, lasting 20-30 minutes.'
+    answer: 'Your first consultation will typically last 60-90 minutes. Dr. Shoukat Khan will take a detailed case history including your physical symptoms, emotional state, lifestyle, family medical history, and overall constitution. This comprehensive approach helps in selecting the most appropriate remedy for you. Subsequent follow-up consultations are usually shorter, lasting 20-30 minutes.'
   },
   {
     question: 'Can I take homeopathic medicines with conventional medications?',
-    answer: 'Yes, homeopathic medicines can be taken alongside conventional medications. They don\'t interfere with each other. However, it\'s important to inform Dr. Mitchell about all medications you\'re currently taking. In many cases, as homeopathic treatment progresses, patients may be able to reduce their dependency on conventional medicines under proper medical supervision.'
+    answer: 'Yes, homeopathic medicines can be taken alongside conventional medications. They don\'t interfere with each other. However, it\'s important to inform Dr. Shoukat Khan about all medications you\'re currently taking. In many cases, as homeopathic treatment progresses, patients may be able to reduce their dependency on conventional medicines under proper medical supervision.'
   },
   {
     question: 'Do you treat serious/chronic diseases?',

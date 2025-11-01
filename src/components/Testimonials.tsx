@@ -11,7 +11,7 @@ const testimonials = [
     condition: 'Chronic Migraine',
     image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150',
     rating: 5,
-    text: "After suffering from severe migraines for 8 years, I was skeptical about homeopathy. But Dr. Mitchell's treatment has been life-changing. I'm now migraine-free for 6 months!",
+    text: "After suffering from severe migraines for 8 years, I was skeptical about homeopathy. But Dr. Shoukat Khan's treatment has been life-changing. I'm now migraine-free for 6 months!",
     initials: 'PS'
   },
   {
@@ -20,7 +20,7 @@ const testimonials = [
     condition: 'Skin Psoriasis',
     image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
     rating: 5,
-    text: "I had tried everything for my psoriasis - countless doctors and treatments. Dr. Mitchell's holistic approach finally gave me clear skin. The best decision I ever made!",
+    text: "I had tried everything for my psoriasis - countless doctors and treatments. Dr. Shoukat Khan's holistic approach finally gave me clear skin. The best decision I ever made!",
     initials: 'RP'
   },
   {
@@ -29,7 +29,7 @@ const testimonials = [
     condition: 'PCOS & Hormonal Issues',
     image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150',
     rating: 5,
-    text: "Dr. Mitchell treated my PCOS with such care and patience. Her approach is truly holistic - treating the whole person. My cycles are regular now and I feel healthier than ever!",
+    text: "Dr. Shoukat Khan treated my PCOS with such care and patience. His approach is truly holistic - treating the whole person. My cycles are regular now and I feel healthier than ever!",
     initials: 'AD'
   },
   {
@@ -47,7 +47,7 @@ const testimonials = [
     condition: 'Rheumatoid Arthritis',
     image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150',
     rating: 5,
-    text: "The pain from arthritis was unbearable. Dr. Mitchell's treatment not only reduced my pain but also improved my overall quality of life. Truly grateful!",
+    text: "The pain from arthritis was unbearable. Dr. Shoukat Khan's treatment not only reduced my pain but also improved my overall quality of life. Truly grateful!",
     initials: 'MK'
   },
   {
@@ -56,7 +56,7 @@ const testimonials = [
     condition: 'Recurring Infections',
     image: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=150',
     rating: 5,
-    text: "Our son used to fall sick every month. After treatment with Dr. Mitchell, his immunity has improved remarkably. He's now the healthiest kid in his class! - Parents",
+    text: "Our son used to fall sick every month. After treatment with Dr. Shoukat Khan, his immunity has improved remarkably. He's now the healthiest kid in his class! - Parents",
     initials: 'AM'
   }
 ];
