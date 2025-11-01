@@ -6,7 +6,7 @@ interface CTASectionProps {
 }
 
 export function CTASection({ onBookAppointment }: CTASectionProps) {
-  const phoneNumber = '919876543210';
+  const phoneNumber = '917488467727';
   const message = encodeURIComponent('Hello! I would like to book an appointment at Aaira Homeo Clinic.');
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
@@ -34,7 +34,7 @@ export function CTASection({ onBookAppointment }: CTASectionProps) {
           </Button>
 
           <a
-            href="tel:+919876543210"
+            href="tel:+917488467727"
             className="inline-flex items-center gap-2 w-full sm:w-auto"
           >
             <Button

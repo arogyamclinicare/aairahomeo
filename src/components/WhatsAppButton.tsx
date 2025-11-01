@@ -7,7 +7,7 @@ export function WhatsAppButton() {
   const [showTooltip, setShowTooltip] = useState(false);
 
   // Phone number - replace with actual WhatsApp number
-  const phoneNumber = '919876543210'; // Format: country code + number without +
+  const phoneNumber = '917488467727'; // Format: country code + number without +
   const message = encodeURIComponent('Hello! I would like to book an appointment at Aaira Homeo Clinic.');
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 

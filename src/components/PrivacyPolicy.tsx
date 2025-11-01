@@ -138,7 +138,7 @@ export const PrivacyPolicy: React.FC<PrivacyPolicyProps> = ({ open, onOpenChange
                 <p className="font-semibold">Aaira Homeo Clinic</p>
                 <p>Dr. Shoukat Khan</p>
                 <p>Email: [Your Email]</p>
-                <p>Phone: [Your Phone]</p>
+                <p>Phone: +91-7488467727</p>
               </div>
             </section>
 
