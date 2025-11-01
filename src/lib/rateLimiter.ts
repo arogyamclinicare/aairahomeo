@@ -86,7 +86,7 @@ class RateLimiter {
   /**
    * Get remaining attempts without incrementing
    */
-  getRemaining(key: string, maxAttempts: number, windowMs: number): number {
+  getRemaining(key: string, maxAttempts: number, _windowMs: number): number {
     const rateLimitKey = `rate_limit_${key}`;
     const countKey = `${rateLimitKey}_count`;
     const resetKey = `${rateLimitKey}_reset`;

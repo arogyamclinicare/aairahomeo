@@ -79,8 +79,9 @@ class AnalyticsService {
    */
   trackEvent(eventName: string, params?: Record<string, unknown>): void {
     if (!this.config.enabled) {
-      // Log to console in development
+      // Log to console in development (allowed for debugging)
       if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
         console.log('[Analytics]', eventName, params);
       }
       return;
