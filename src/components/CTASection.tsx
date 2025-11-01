@@ -15,10 +15,10 @@ export function CTASection({ onBookAppointment }: CTASectionProps) {
       {/* Decorative elements */}
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-white mb-4">
+        <h2 className="text-white mb-4 text-3xl sm:text-4xl md:text-5xl">
           Ready to Start Your Healing Journey?
         </h2>
-        <p className="text-emerald-100 text-lg mb-12 max-w-2xl mx-auto">
+        <p className="text-emerald-100 text-base sm:text-lg mb-12 max-w-2xl mx-auto">
           Take the first step towards natural, holistic healing. Book your consultation today 
           and experience the transformative power of classical homeopathy.
         </p>

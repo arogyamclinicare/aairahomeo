@@ -9,7 +9,13 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit"
+    "lint:fix": "eslint . --fix",
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "build:prod": "NODE_ENV=production vite build",
+    "analyze": "vite-bundle-visualizer"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",
@@ -39,11 +45,13 @@
     "@radix-ui/react-toggle": "^1.1.2",
     "@radix-ui/react-toggle-group": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
+    "@supabase/supabase-js": "^2.78.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
     "cmdk": "^1.1.1",
     "date-fns": "^3.3.1",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.23.24",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.487.0",
     "next-themes": "^0.4.6",
@@ -58,14 +66,28 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.19",
+    "@eslint/js": "^9.39.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^20.19.24",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
     "@vitejs/plugin-react-swc": "^3.10.2",
+    "@vitest/ui": "^4.0.6",
     "autoprefixer": "^10.4.18",
+    "eslint": "^9.39.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
+    "jsdom": "^27.1.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.17",
+    "terser": "^5.44.0",
     "typescript": "^5.4.2",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^4.0.6"
   }
 }

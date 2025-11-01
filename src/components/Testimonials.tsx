@@ -95,7 +95,7 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
 
           {/* Testimonial text */}
           <p className="text-gray-600 mb-6 relative z-10 italic leading-relaxed">
-            "{testimonial.text}"
+            &quot;{testimonial.text}&quot;
           </p>
 
           {/* Patient info */}
@@ -155,26 +155,26 @@ export function Testimonials() {
 
         {/* Trust badge with animated counters */}
         <div className="mt-12 sm:mt-20 text-center">
-          <div className="inline-flex flex-col sm:flex-row items-center gap-4 sm:gap-8 md:gap-12 bg-gradient-to-r from-emerald-50 to-teal-50 px-6 py-6 sm:px-12 sm:py-8 rounded-2xl sm:rounded-3xl border-2 border-emerald-200 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
-            <div className="text-center group cursor-default">
-              <div className="text-emerald-700 mb-1 text-lg sm:text-xl md:text-2xl group-hover:scale-110 transition-transform">
+          <div className="inline-flex flex-row items-center justify-center gap-2 sm:gap-4 md:gap-8 lg:gap-12 bg-gradient-to-r from-emerald-50 to-teal-50 px-3 py-3 sm:px-6 sm:py-6 md:px-12 md:py-8 rounded-xl sm:rounded-2xl md:rounded-3xl border-2 border-emerald-200 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
+            <div className="text-center group cursor-default flex-shrink-0">
+              <div className="text-emerald-700 mb-0.5 sm:mb-1 text-sm sm:text-lg md:text-xl lg:text-2xl group-hover:scale-110 transition-transform font-semibold">
                 <AnimatedCounter end={4.9} suffix="/5.0" />
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">Average Rating</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 leading-tight">Average Rating</div>
             </div>
-            <div className="w-full sm:w-px h-px sm:h-16 bg-emerald-300"></div>
-            <div className="text-center group cursor-default">
-              <div className="text-emerald-700 mb-1 text-lg sm:text-xl md:text-2xl group-hover:scale-110 transition-transform">
+            <div className="w-px h-8 sm:h-12 md:h-16 bg-emerald-300 flex-shrink-0"></div>
+            <div className="text-center group cursor-default flex-shrink-0">
+              <div className="text-emerald-700 mb-0.5 sm:mb-1 text-sm sm:text-lg md:text-xl lg:text-2xl group-hover:scale-110 transition-transform font-semibold">
                 <AnimatedCounter end={500} suffix="+" />
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">Happy Patients</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 leading-tight">Happy Patients</div>
             </div>
-            <div className="w-full sm:w-px h-px sm:h-16 bg-emerald-300"></div>
-            <div className="text-center group cursor-default">
-              <div className="text-emerald-700 mb-1 text-lg sm:text-xl md:text-2xl group-hover:scale-110 transition-transform">
+            <div className="w-px h-8 sm:h-12 md:h-16 bg-emerald-300 flex-shrink-0"></div>
+            <div className="text-center group cursor-default flex-shrink-0">
+              <div className="text-emerald-700 mb-0.5 sm:mb-1 text-sm sm:text-lg md:text-xl lg:text-2xl group-hover:scale-110 transition-transform font-semibold">
                 <AnimatedCounter end={95} suffix="%" />
               </div>
-              <div className="text-xs sm:text-sm text-gray-600">Success Rate</div>
+              <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 leading-tight">Success Rate</div>
             </div>
           </div>
         </div>

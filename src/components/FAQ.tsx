@@ -37,8 +37,8 @@ export function FAQ() {
     <section id="faq" className="py-20 sm:py-24 md:py-32 bg-gradient-to-br from-emerald-50 to-teal-50 relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-gray-900 mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-600">
+          <h2 className="text-gray-900 mb-4 text-3xl sm:text-4xl md:text-5xl">Frequently Asked Questions</h2>
+          <p className="text-gray-600 text-base sm:text-lg">
             Common questions about homeopathy and our treatment approach
           </p>
         </div>
@@ -66,13 +66,6 @@ export function FAQ() {
             Feel free to contact us or schedule a consultation to discuss your specific health concerns.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-2 sm:gap-4">
-            <a 
-              href="tel:+919876543210"
-              className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm sm:text-base"
-            >
-              Call: +91 98765 43210
-            </a>
-            <span className="text-gray-400 hidden sm:inline">|</span>
             <a 
               href="mailto:aairahomeobihar@gmail.com"
               className="inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 text-sm sm:text-base break-all"

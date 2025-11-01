@@ -1,7 +1,6 @@
 import React from 'react';
 import { Shield, Award, Users, Heart } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
-import { AnimatedCounter } from './AnimatedCounter';
 
 function BadgeItem({ badge, index }: { badge: any; index: number }) {
   const { ref, isVisible } = useScrollAnimation({ threshold: 0.5 });

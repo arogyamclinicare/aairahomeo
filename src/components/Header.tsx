@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Calendar, Heart, Menu, X } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
+import { Calendar, Menu, X } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from './ui/sheet';
 
 interface HeaderProps {
   onBookAppointment: () => void;
@@ -68,7 +68,7 @@ export function Header({ onBookAppointment }: HeaderProps) {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 sm:h-24">
           {/* Logo */}
           <button
             onClick={() => scrollToSection('home')}
@@ -77,14 +77,8 @@ export function Header({ onBookAppointment }: HeaderProps) {
             <img 
               src="/images/logo final.png"
               alt="Aairah Homeo Clinic"
-              className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="hidden sm:block">
-              <div className={`transition-colors ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}>
-                Aairah Homeo
-              </div>
-              <div className="text-xs text-emerald-600">Classical Homeopathy</div>
-            </div>
           </button>
 
           {/* Desktop Navigation */}
@@ -136,29 +130,28 @@ export function Header({ onBookAppointment }: HeaderProps) {
                   {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] sm:w-[350px]">
-                <div className="flex flex-col gap-6 mt-8">
+              <SheetContent side="right" className="w-[280px] sm:w-[350px] bg-white border-l border-emerald-100">
+                <SheetHeader>
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                </SheetHeader>
+                <div className="flex flex-col gap-6 mt-2">
                   <div className="flex items-center gap-3 pb-4 border-b border-gray-200">
                     <img 
                       src="/images/logo final.png"
                       alt="Aairah Homeo Clinic"
-                      className="h-14 w-auto object-contain"
+                      className="h-16 sm:h-20 w-auto object-contain"
                     />
-                    <div>
-                      <div className="text-gray-900">Aairah Homeo</div>
-                      <div className="text-sm text-emerald-600">Classical Homeopathy</div>
-                    </div>
                   </div>
 
-                  <nav className="flex flex-col gap-2">
+                  <nav className="flex flex-col gap-1.5">
                     {navItems.map((item) => (
                       <button
                         key={item.id}
                         onClick={() => scrollToSection(item.id)}
-                        className={`px-4 py-3 rounded-lg text-left transition-all duration-300 ${
+                        className={`px-4 py-3 rounded-lg text-left transition-all duration-300 font-medium ${
                           activeSection === item.id
-                            ? 'bg-emerald-100 text-emerald-700'
-                            : 'text-gray-600 hover:text-emerald-600 hover:bg-emerald-50'
+                            ? 'bg-emerald-600 text-white shadow-md'
+                            : 'text-gray-700 hover:text-emerald-600 hover:bg-emerald-50'
                         }`}
                       >
                         {item.label}
@@ -166,19 +159,13 @@ export function Header({ onBookAppointment }: HeaderProps) {
                     ))}
                   </nav>
 
-                  <div className="pt-4 border-t border-gray-200 space-y-3">
-                    <a
-                      href="tel:+919876543210"
-                      className="block px-4 py-3 bg-gray-100 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
-                    >
-                      📞 +91 98765 43210
-                    </a>
+                  <div className="pt-4 border-t border-gray-200">
                     <Button
                       onClick={() => {
                         onBookAppointment();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white"
+                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg"
                     >
                       <Calendar className="w-4 h-4 mr-2" />
                       Book Appointment

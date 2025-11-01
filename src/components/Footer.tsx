@@ -5,7 +5,7 @@ interface FooterProps {
   onBookAppointment: () => void;
 }
 
-export function Footer({ onBookAppointment }: FooterProps) {
+export function Footer({ onBookAppointment: _onBookAppointment }: FooterProps) {
   // onBookAppointment prop kept for interface compatibility but not used
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-emerald-900 text-white">

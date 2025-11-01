@@ -9,11 +9,11 @@ export function AboutDoctor() {
   return (
     <section id="about" className="relative overflow-hidden">
       {/* Seamless gradient transition - extends upward into Hero section */}
-      <div className="absolute top-0 left-0 right-0 h-40 sm:h-48 md:h-56 bg-gradient-to-b from-emerald-50 via-teal-50 via-white/50 to-white -mt-40 sm:-mt-48 md:-mt-56 pointer-events-none z-0"></div>
+      <div className="absolute top-0 left-0 right-0 h-40 sm:h-48 md:h-56 bg-gradient-to-b from-emerald-50 via-teal-50 to-emerald-50/80 -mt-40 sm:-mt-48 md:-mt-56 pointer-events-none z-0"></div>
       
-      {/* White background content area */}
-      <div className="relative bg-white pt-24 sm:pt-32 md:pt-40 pb-20 sm:pb-24 md:pb-32 z-10">
-        {/* Decorative elements */}
+      {/* Gradient background content area matching Hero */}
+      <div className="relative bg-gradient-to-b from-emerald-50 via-teal-50 to-cyan-50 pt-24 sm:pt-32 md:pt-40 pb-20 sm:pb-24 md:pb-32 z-10">
+      {/* Decorative elements */}
         <div className="absolute top-10 left-10 w-64 h-64 sm:w-72 sm:h-72 bg-emerald-100 rounded-full blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-10 right-10 w-80 h-80 sm:w-96 sm:h-96 bg-teal-100 rounded-full blur-3xl opacity-30 animate-pulse" style={{ animationDelay: '2s' }}></div>
 
@@ -29,8 +29,8 @@ export function AboutDoctor() {
               Meet Your Physician
             </span>
           </div>
-          <h2 className="text-gray-900 mb-4">About Dr. Shoukat Khan</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+          <h2 className="text-gray-900 mb-4 text-3xl sm:text-4xl md:text-5xl">About Dr. Shoukat Khan</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg">
             Dedicated to providing holistic healthcare through classical homeopathy
           </p>
         </div>
@@ -73,8 +73,8 @@ export function AboutDoctor() {
           {/* Doctor Information */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <h3 className="text-gray-900">Qualifications & Experience</h3>
-              <div className="space-y-2 text-gray-600">
+              <h3 className="text-gray-900 text-xl sm:text-2xl">Qualifications & Experience</h3>
+              <div className="space-y-2 text-gray-600 text-sm sm:text-base">
                 <p className="flex items-start gap-2">
                   <Award className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
                   <span>BHMS (Bachelor of Homeopathic Medicine & Surgery)</span>
@@ -91,17 +91,17 @@ export function AboutDoctor() {
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-gray-900">Treatment Philosophy</h4>
-              <p className="text-gray-600">
+              <h4 className="text-gray-900 text-lg sm:text-xl">Treatment Philosophy</h4>
+              <p className="text-gray-600 text-sm sm:text-base">
                 I believe in treating the person as a whole, not just the disease. Classical homeopathy focuses on understanding the unique constitution of each patient and addressing the root cause of ailments rather than merely suppressing symptoms.
               </p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-sm sm:text-base">
                 My approach combines time-tested homeopathic principles with modern understanding of health, ensuring safe, gentle, and effective treatment for patients of all ages.
               </p>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-gray-900">Languages Spoken</h4>
+              <h4 className="text-gray-900 text-lg sm:text-xl">Languages Spoken</h4>
               <div className="flex flex-wrap gap-2">
                 {['English', 'Hindi', 'Urdu'].map((language) => (
                   <span
@@ -118,13 +118,13 @@ export function AboutDoctor() {
               <div className="flex items-center gap-3 text-emerald-700">
                 <Heart className="w-6 h-6" />
                 <p className="text-gray-700">
-                  "Healing is not just about medicine, it's about understanding and care"
+                  &quot;Healing is not just about medicine, it&apos;s about understanding and care&quot;
                 </p>
+              </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </section>
   );

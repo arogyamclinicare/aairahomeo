@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { AboutDoctor } from './components/AboutDoctor';
@@ -28,36 +29,41 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Custom cursor effect */}
-      <div 
-        className="pointer-events-none fixed w-6 h-6 rounded-full border-2 border-emerald-500/50 z-[100] transition-transform duration-100"
-        style={{
-          left: `${mousePosition.x}px`,
-          top: `${mousePosition.y}px`,
-          transform: 'translate(-50%, -50%)',
-        }}
-      />
-      
-      <ScrollProgress />
-      <Header onBookAppointment={() => setIsAppointmentOpen(true)} />
-      <Hero onBookAppointment={() => setIsAppointmentOpen(true)} />
-      <AboutDoctor />
-      <Treatments />
-      <Timeline />
-      <Testimonials />
-      <ClinicInfo />
-      <FAQ />
-      <CTASection onBookAppointment={() => setIsAppointmentOpen(true)} />
-      <Footer onBookAppointment={() => setIsAppointmentOpen(true)} />
-      
-      <AppointmentDialog 
-        open={isAppointmentOpen} 
-        onOpenChange={setIsAppointmentOpen}
-      />
-      
-      <WhatsAppButton />
-      <Toaster />
-    </div>
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
+        {/* Custom cursor effect */}
+        <div 
+          className="pointer-events-none fixed w-6 h-6 rounded-full border-2 border-emerald-500/50 z-[100] transition-transform duration-100"
+          style={{
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
+            transform: 'translate(-50%, -50%)',
+          }}
+          aria-hidden="true"
+        />
+        
+        <ScrollProgress />
+        <Header onBookAppointment={() => setIsAppointmentOpen(true)} />
+        <main id="main-content">
+          <Hero onBookAppointment={() => setIsAppointmentOpen(true)} />
+          <AboutDoctor />
+          <Treatments />
+          <Timeline />
+          <Testimonials />
+          <ClinicInfo />
+          <FAQ />
+          <CTASection onBookAppointment={() => setIsAppointmentOpen(true)} />
+        </main>
+        <Footer onBookAppointment={() => setIsAppointmentOpen(true)} />
+        
+        <AppointmentDialog 
+          open={isAppointmentOpen} 
+          onOpenChange={setIsAppointmentOpen}
+        />
+        
+        <WhatsAppButton />
+        <Toaster />
+      </div>
+    </ErrorBoundary>
   );
 }

@@ -1,0 +1,15 @@
+# Robots.txt for Aaira Homeo Clinic
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /*.json$
+
+# Sitemap
+Sitemap: https://aairahomeo.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+

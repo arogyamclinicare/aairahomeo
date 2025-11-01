@@ -18,11 +18,12 @@ import {
   SelectValue,
 } from './ui/select';
 import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
+import { AppointmentService } from '../services/appointmentService';
 
 interface AppointmentDialogProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onOpenChange: (_open: boolean) => void;
 }
 
 export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps) {
@@ -37,7 +38,7 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
     time: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
@@ -46,27 +47,51 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
       return;
     }
 
-    // Simulate form submission
-    console.log('Appointment Request:', formData);
-    
-    // Show success state
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds and close dialog
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: '',
-        phone: '',
-        email: '',
-        age: '',
-        problem: '',
-        date: '',
-        time: ''
+    // Show loading state
+    const loadingToast = toast.loading('Submitting your appointment request...');
+
+    try {
+      // Submit to Supabase
+      const result = await AppointmentService.submitAppointment({
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email || undefined,
+        age: formData.age,
+        problem: formData.problem || undefined,
+        preferred_date: formData.date || undefined,
+        preferred_time: formData.time || undefined
       });
-      onOpenChange(false);
-      toast.success('Appointment request sent successfully!');
-    }, 3000);
+
+      // Dismiss loading toast
+      toast.dismiss(loadingToast);
+
+      if (result.success) {
+        // Show success state
+        setIsSubmitted(true);
+        toast.success(result.message);
+        
+        // Reset form after 3 seconds and close dialog
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            phone: '',
+            email: '',
+            age: '',
+            problem: '',
+            date: '',
+            time: ''
+          });
+          onOpenChange(false);
+        }, 3000);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      toast.dismiss(loadingToast);
+      console.error('Form submission error:', error);
+      toast.error('An unexpected error occurred. Please try again later.');
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -81,7 +106,7 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
             <DialogHeader>
               <DialogTitle className="text-gray-900">Book an Appointment</DialogTitle>
               <DialogDescription className="text-gray-600">
-                Fill in your details and we'll contact you to confirm your appointment.
+                Fill in your details and we&apos;ll contact you to confirm your appointment.
               </DialogDescription>
             </DialogHeader>
 
@@ -180,7 +205,7 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
                   <Label htmlFor="time" className="text-gray-700">
                     Preferred Time
                   </Label>
-                  <Select value={formData.time} onValueChange={(value) => handleChange('time', value)}>
+                  <Select value={formData.time} onValueChange={(value: string) => handleChange('time', value)}>
                     <SelectTrigger className="w-full">
                       <div className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-gray-400" />
@@ -240,7 +265,7 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
               Your appointment request has been received successfully.
             </p>
             <p className="text-gray-600">
-              We'll contact you soon to confirm your appointment.
+              We&apos;ll contact you soon to confirm your appointment.
             </p>
           </div>
         )}
