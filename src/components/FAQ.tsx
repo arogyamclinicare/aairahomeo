@@ -34,14 +34,14 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="py-20 sm:py-24 md:py-32 bg-gradient-to-br from-emerald-50 to-teal-50 relative overflow-hidden">
+    <section id="faq" itemScope itemType="https://schema.org/FAQPage" className="py-20 sm:py-24 md:py-32 bg-gradient-to-br from-emerald-50 to-teal-50 relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <header className="text-center mb-16">
           <h2 className="text-gray-900 mb-4 text-3xl sm:text-4xl md:text-5xl">Frequently Asked Questions</h2>
           <p className="text-gray-600 text-base sm:text-lg">
             Common questions about homeopathy and our treatment approach
           </p>
-        </div>
+        </header>
 
         <Accordion type="single" collapsible className="space-y-4">
           {faqs.map((faq, index) => (
@@ -49,12 +49,16 @@ export function FAQ() {
               key={index} 
               value={`item-${index}`}
               className="bg-white border border-emerald-100 rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
+              itemScope
+              itemType="https://schema.org/Question"
             >
-              <AccordionTrigger className="text-gray-900 hover:text-emerald-600 text-left">
+              <AccordionTrigger className="text-gray-900 hover:text-emerald-600 text-left" itemProp="name">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-gray-600">
-                {faq.answer}
+              <AccordionContent className="text-gray-600" itemScope itemType="https://schema.org/Answer">
+                <div itemProp="text">
+                  {faq.answer}
+                </div>
               </AccordionContent>
             </AccordionItem>
           ))}

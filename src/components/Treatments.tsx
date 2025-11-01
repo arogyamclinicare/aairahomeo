@@ -151,8 +151,12 @@ function TreatmentCard({ treatment, index }: { treatment: typeof treatments[0]; 
             {imagePath ? (
               <img 
                 src={imagePath} 
-                alt={treatment.title} 
+                alt={`${treatment.title} Treatment by Dr. Shoukat Khan - ${treatment.description}`}
+                title={`${treatment.title} - Homeopathic Treatment`}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                width="60"
+                height="60"
               />
             ) : (
               <Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${colors.icon}`} />

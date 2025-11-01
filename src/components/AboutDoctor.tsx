@@ -50,8 +50,13 @@ export function AboutDoctor() {
               <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 rounded-full overflow-hidden shadow-2xl border-4 sm:border-6 md:border-8 border-emerald-100 group-hover:border-emerald-200 transition-all duration-500 group-hover:scale-105">
                 <img
                   src="/images/dr photo.png"
-                  alt="Dr. Shoukat Khan"
+                  alt="Dr. Shoukat Khan - Expert Classical Homeopathic Physician in Darbhanga, Bihar with 13+ Years Experience"
+                  title="Dr. Shoukat Khan - BHMS, Classical Homeopathic Doctor"
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                  itemProp="image"
                 />
                 {/* Overlay gradient on hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-emerald-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

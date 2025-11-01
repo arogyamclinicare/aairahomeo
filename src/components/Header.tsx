@@ -76,8 +76,12 @@ export function Header({ onBookAppointment }: HeaderProps) {
           >
             <img 
               src="/images/logo final.png"
-              alt="Aairah Homeo Clinic"
+              alt="Aaira Homeo Clinic - Best Homeopathic Doctor in Darbhanga, Dr. Shoukat Khan"
+              title="Aaira Homeo Clinic - Classical Homeopathy"
               className="h-12 sm:h-16 md:h-20 lg:h-24 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              loading="eager"
+              width="200"
+              height="200"
             />
           </button>
 
@@ -138,8 +142,12 @@ export function Header({ onBookAppointment }: HeaderProps) {
                   <div className="flex items-center gap-3 pb-4 border-b border-gray-200">
                     <img 
                       src="/images/logo final.png"
-                      alt="Aairah Homeo Clinic"
+                      alt="Aaira Homeo Clinic - Best Homeopathic Doctor in Darbhanga"
+                      title="Aaira Homeo Clinic"
                       className="h-16 sm:h-20 w-auto object-contain"
+                      loading="eager"
+                      width="200"
+                      height="200"
                     />
                   </div>
 

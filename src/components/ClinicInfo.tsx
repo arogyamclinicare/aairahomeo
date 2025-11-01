@@ -25,7 +25,8 @@ export function ClinicInfo() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                  title="Aaira Homeo Clinic Location"
+                  title="Aaira Homeo Clinic Location - Pansary auto service, pani tanki Lalbagh, Darbhanga Bihar 846004"
+                  aria-label="Google Maps location of Aaira Homeo Clinic in Darbhanga, Bihar"
                 className="w-full h-full"
               ></iframe>
                 {/* Overlay button to open in Google Maps */}

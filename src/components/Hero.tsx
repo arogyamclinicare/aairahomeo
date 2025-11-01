@@ -254,7 +254,8 @@ export function Hero({ onBookAppointment }: HeroProps) {
                 {/* Doctor Image */}
                 <img
                   src="/images/imgfx_20251031_223840_1 (1).png"
-                  alt="Dr. Shoukat Khan - Professional Homeopathic Doctor"
+                  alt="Dr. Shoukat Khan - Best Classical Homeopathic Doctor in Darbhanga, Bihar | Expert in Natural Treatment"
+                  title="Dr. Shoukat Khan - Homeopathic Physician"
                   className="w-full h-auto object-contain rounded-3xl group-hover:scale-105 transition-transform duration-500"
                 />
               </div>

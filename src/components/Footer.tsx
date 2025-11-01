@@ -16,8 +16,12 @@ export function Footer({ onBookAppointment: _onBookAppointment }: FooterProps) {
             <div className="flex items-center gap-3">
               <img 
                 src="/images/logo final.png"
-                alt="Aairah Homeo Clinic"
+                alt="Aaira Homeo Clinic - Classical Homeopathy Clinic in Darbhanga, Bihar"
+                title="Aaira Homeo Clinic Logo"
                 className="h-12 w-auto object-contain brightness-0 invert"
+                loading="lazy"
+                width="200"
+                height="200"
               />
             </div>
             <p className="text-gray-300 text-sm">

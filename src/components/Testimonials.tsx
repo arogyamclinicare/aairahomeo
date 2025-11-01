@@ -101,7 +101,12 @@ function TestimonialCard({ testimonial, index }: { testimonial: typeof testimoni
           {/* Patient info */}
           <div className="flex items-center gap-4 pt-4 border-t border-gray-100">
             <Avatar className="w-14 h-14 border-2 border-emerald-100 group-hover:border-emerald-300 transition-all group-hover:scale-110">
-              <AvatarImage src={testimonial.image} alt={testimonial.name} />
+              <AvatarImage 
+                src={testimonial.image} 
+                alt={`${testimonial.name} - Patient testimonial for ${testimonial.condition} treatment at Aaira Homeo Clinic`}
+                title={`Patient Review - ${testimonial.name}`}
+                loading="lazy"
+              />
               <AvatarFallback className="bg-gradient-to-br from-emerald-100 to-teal-100 text-emerald-700">
                 {testimonial.initials}
               </AvatarFallback>
