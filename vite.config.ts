@@ -61,6 +61,18 @@
         },
       },
       rollupOptions: {
+        external: (id) => {
+          // Externalize Sentry if not installed (optional dependency)
+          if (id === '@sentry/react') {
+            try {
+              require.resolve(id);
+              return false; // Include if installed
+            } catch {
+              return true; // External if not installed
+            }
+          }
+          return false;
+        },
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-dom'],

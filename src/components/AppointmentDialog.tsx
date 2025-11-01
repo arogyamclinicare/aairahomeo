@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Dialog,
   DialogContent,
@@ -17,9 +19,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './ui/form';
 import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { AppointmentService } from '../services/appointmentService';
+import { appointmentSchema, type AppointmentFormData, formatPhoneNumber, unformatPhoneNumber } from '../lib/validation';
+import { rateLimiter, appointmentRateLimit } from '../lib/rateLimiter';
+import { analytics } from '../lib/analytics';
+import { errorTracking } from '../lib/errorTracking';
 
 interface AppointmentDialogProps {
   open: boolean;
@@ -28,75 +42,119 @@ interface AppointmentDialogProps {
 
 export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    age: '',
-    problem: '',
-    date: '',
-    time: ''
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<AppointmentFormData>({
+    resolver: zodResolver(appointmentSchema),
+    defaultValues: {
+      name: '',
+      phone: '',
+      email: '',
+      age: '',
+      problem: '',
+      date: '',
+      time: '',
+    },
+    mode: 'onBlur', // Validate on blur for better UX
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (data: AppointmentFormData) => {
+    // Check rate limit
+    const rateLimitCheck = rateLimiter.check(appointmentRateLimit);
     
-    // Validate required fields
-    if (!formData.name || !formData.phone || !formData.age) {
-      toast.error('Please fill in all required fields');
+    if (!rateLimitCheck.allowed) {
+      const minutesLeft = Math.ceil((rateLimitCheck.resetTime - Date.now()) / 60000);
+      toast.error(`Too many requests. Please try again in ${minutesLeft} minute${minutesLeft > 1 ? 's' : ''}.`);
+      
+      analytics.trackEvent('rate_limit_exceeded', {
+        form: 'appointment',
+        reset_time: rateLimitCheck.resetTime,
+      });
+      
       return;
     }
 
-    // Show loading state
+    setIsSubmitting(true);
+    
+    // Track form submission attempt
+    analytics.trackEvent('appointment_form_submit_attempt', {
+      has_email: !!data.email,
+      has_problem: !!data.problem,
+      has_date: !!data.date,
+    });
+
     const loadingToast = toast.loading('Submitting your appointment request...');
 
     try {
       // Submit to Supabase
       const result = await AppointmentService.submitAppointment({
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email || undefined,
-        age: formData.age,
-        problem: formData.problem || undefined,
-        preferred_date: formData.date || undefined,
-        preferred_time: formData.time || undefined
+        name: data.name,
+        phone: unformatPhoneNumber(data.phone),
+        email: data.email || undefined,
+        age: data.age,
+        problem: data.problem || undefined,
+        preferred_date: data.date || undefined,
+        preferred_time: data.time || undefined,
       });
 
-      // Dismiss loading toast
       toast.dismiss(loadingToast);
 
       if (result.success) {
-        // Show success state
         setIsSubmitted(true);
         toast.success(result.message);
         
-        // Reset form after 3 seconds and close dialog
+        // Track successful submission
+        analytics.trackAppointmentSubmit(true);
+        errorTracking.addBreadcrumb('Appointment submitted successfully', 'form');
+        
+        // Reset form and close dialog after 3 seconds
         setTimeout(() => {
           setIsSubmitted(false);
-          setFormData({
-            name: '',
-            phone: '',
-            email: '',
-            age: '',
-            problem: '',
-            date: '',
-            time: ''
-          });
+          form.reset();
           onOpenChange(false);
+          rateLimiter.reset(appointmentRateLimit.key);
         }, 3000);
       } else {
         toast.error(result.message);
+        analytics.trackAppointmentSubmit(false, result.message);
+        errorTracking.captureMessage(`Appointment submission failed: ${result.message}`, 'error', {
+          form: 'appointment',
+        });
       }
     } catch (error) {
       toast.dismiss(loadingToast);
-      console.error('Form submission error:', error);
+      
+      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+      errorTracking.captureException(error instanceof Error ? error : new Error(errorMessage), {
+        form: 'appointment',
+        formData: { ...data, phone: '[REDACTED]' }, // Don't log full phone number
+      });
+      
+      analytics.trackFormError('appointment', errorMessage);
+      analytics.trackAppointmentSubmit(false, errorMessage);
+      
       toast.error('An unexpected error occurred. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  // Format phone number as user types
+  const handlePhoneChange = (value: string, onChange: (value: string) => void) => {
+    const unformatted = unformatPhoneNumber(value);
+    // Limit to 15 digits
+    if (unformatted.length <= 15) {
+      const formatted = unformatted.length > 0 ? formatPhoneNumber(unformatted) : '';
+      onChange(formatted);
+    }
   };
+
+  // Get remaining attempts for display
+  const remainingAttempts = rateLimiter.getRemaining(
+    appointmentRateLimit.key,
+    appointmentRateLimit.maxAttempts,
+    appointmentRateLimit.windowMs
+  );
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -110,150 +168,208 @@ export function AppointmentDialog({ open, onOpenChange }: AppointmentDialogProps
               </DialogDescription>
             </DialogHeader>
 
-            <form onSubmit={handleSubmit} className="space-y-5 mt-4">
-              {/* Name */}
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-700">
-                  Full Name <span className="text-red-500">*</span>
-                </Label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <Input
-                    id="name"
-                    placeholder="Enter your full name"
-                    value={formData.name}
-                    onChange={(e) => handleChange('name', e.target.value)}
-                    className="pl-10"
-                    required
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5 mt-4">
+                {/* Name */}
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">
+                        Full Name <span className="text-red-500">*</span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                          <Input
+                            {...field}
+                            placeholder="Enter your full name"
+                            className="pl-10"
+                            autoComplete="name"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Phone and Age */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700">
+                          Phone Number <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                            <Input
+                              {...field}
+                              type="tel"
+                              placeholder="(123) 456-7890"
+                              className="pl-10"
+                              autoComplete="tel"
+                              onChange={(e) => handlePhoneChange(e.target.value, field.onChange)}
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="age"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700">
+                          Age <span className="text-red-500">*</span>
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="number"
+                            placeholder="Your age"
+                            autoComplete="bday-year"
+                            min="1"
+                            max="120"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-              </div>
 
-              {/* Phone and Age */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-gray-700">
-                    Phone Number <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="Your phone"
-                      value={formData.phone}
-                      onChange={(e) => handleChange('phone', e.target.value)}
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
+                {/* Email */}
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">
+                        Email <span className="text-gray-500 text-sm">(Optional)</span>
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="your.email@example.com"
+                            className="pl-10"
+                            autoComplete="email"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-                <div className="space-y-2">
-                  <Label htmlFor="age" className="text-gray-700">
-                    Age <span className="text-red-500">*</span>
-                  </Label>
-                  <Input
-                    id="age"
-                    type="number"
-                    placeholder="Your age"
-                    value={formData.age}
-                    onChange={(e) => handleChange('age', e.target.value)}
-                    required
+                {/* Date and Time */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="date"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700">Preferred Date</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <Calendar className="absolute left-3 top-3 w-4 h-4 text-gray-400 z-10 pointer-events-none" />
+                            <Input
+                              {...field}
+                              type="date"
+                              className="pl-10"
+                              min={new Date().toISOString().split('T')[0]}
+                              autoComplete="bday"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="time"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-700">Preferred Time</FormLabel>
+                        <FormControl>
+                          <Select value={field.value} onValueChange={field.onChange}>
+                            <SelectTrigger className="w-full">
+                              <div className="flex items-center gap-2">
+                                <Clock className="w-4 h-4 text-gray-400" />
+                                <SelectValue placeholder="Select time" />
+                              </div>
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="morning">Morning (9 AM - 1 PM)</SelectItem>
+                              <SelectItem value="evening">Evening (5 PM - 8:30 PM)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
                   />
                 </div>
-              </div>
 
-              {/* Email */}
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700">
-                  Email <span className="text-gray-500 text-sm">(Optional)</span>
-                </Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="your.email@example.com"
-                    value={formData.email}
-                    onChange={(e) => handleChange('email', e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
+                {/* Problem Description */}
+                <FormField
+                  control={form.control}
+                  name="problem"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-gray-700">Brief Description of Problem</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+                          <Textarea
+                            {...field}
+                            placeholder="Please describe your health concern..."
+                            className="pl-10 min-h-[100px]"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Date and Time */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="date" className="text-gray-700">
-                    Preferred Date
-                  </Label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-3 w-4 h-4 text-gray-400 z-10 pointer-events-none" />
-                    <Input
-                      id="date"
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => handleChange('date', e.target.value)}
-                      className="pl-10"
-                      min={new Date().toISOString().split('T')[0]}
-                    />
-                  </div>
+                {/* Info Note */}
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                  <p className="text-sm text-emerald-800">
+                    <strong>Note:</strong> This is an appointment request. Our staff will call you 
+                    within 24 hours to confirm your appointment timing.
+                  </p>
+                  {remainingAttempts < appointmentRateLimit.maxAttempts && (
+                    <p className="text-xs text-emerald-700 mt-2">
+                      Remaining attempts: {remainingAttempts} of {appointmentRateLimit.maxAttempts}
+                    </p>
+                  )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="time" className="text-gray-700">
-                    Preferred Time
-                  </Label>
-                  <Select value={formData.time} onValueChange={(value: string) => handleChange('time', value)}>
-                    <SelectTrigger className="w-full">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-400" />
-                        <SelectValue placeholder="Select time" />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="morning">Morning (9 AM - 1 PM)</SelectItem>
-                      <SelectItem value="evening">Evening (5 PM - 8:30 PM)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              {/* Problem Description */}
-              <div className="space-y-2">
-                <Label htmlFor="problem" className="text-gray-700">
-                  Brief Description of Problem
-                </Label>
-                <div className="relative">
-                  <FileText className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
-                  <Textarea
-                    id="problem"
-                    placeholder="Please describe your health concern..."
-                    value={formData.problem}
-                    onChange={(e) => handleChange('problem', e.target.value)}
-                    className="pl-10 min-h-[100px]"
-                  />
-                </div>
-              </div>
-
-              {/* Info Note */}
-              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                <p className="text-sm text-emerald-800">
-                  <strong>Note:</strong> This is an appointment request. Our staff will call you 
-                  within 24 hours to confirm your appointment timing.
-                </p>
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
-                size="lg"
-              >
-                Submit Appointment Request
-              </Button>
-            </form>
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700"
+                  size="lg"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Appointment Request'}
+                </Button>
+              </form>
+            </Form>
           </>
         ) : (
           <div className="py-12 text-center">

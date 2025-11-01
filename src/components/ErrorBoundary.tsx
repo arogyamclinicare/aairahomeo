@@ -42,10 +42,18 @@ export class ErrorBoundary extends Component<Props, State> {
       errorInfo,
     });
 
-    // In production, send to error tracking service
-    if (import.meta.env.PROD) {
-      // Example: Sentry.captureException(error, { extra: errorInfo });
-    }
+    // Send to error tracking service
+    import('../lib/errorTracking').then(({ errorTracking }) => {
+      errorTracking.captureException(error, {
+        componentStack: errorInfo.componentStack,
+        errorBoundary: true,
+      });
+    }).catch((err) => {
+      // Silent fail if error tracking not available
+      if (import.meta.env.DEV) {
+        console.warn('Error tracking not available:', err);
+      }
+    });
   }
 
   handleReset = () => {

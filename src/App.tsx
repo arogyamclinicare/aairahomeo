@@ -14,10 +14,16 @@ import { AppointmentDialog } from './components/AppointmentDialog';
 import { WhatsAppButton } from './components/WhatsAppButton';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Toaster } from './components/ui/sonner';
+import { analytics } from './lib/analytics';
 
 export default function App() {
   const [isAppointmentOpen, setIsAppointmentOpen] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleBookAppointment = () => {
+    analytics.trackButtonClick('book_appointment', 'header');
+    setIsAppointmentOpen(true);
+  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -30,6 +36,13 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      {/* Skip to main content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-lg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
         {/* Custom cursor effect */}
         <div 
@@ -43,18 +56,27 @@ export default function App() {
         />
         
         <ScrollProgress />
-        <Header onBookAppointment={() => setIsAppointmentOpen(true)} />
+        <Header onBookAppointment={handleBookAppointment} />
         <main id="main-content">
-          <Hero onBookAppointment={() => setIsAppointmentOpen(true)} />
+          <Hero onBookAppointment={() => {
+            analytics.trackButtonClick('book_appointment', 'hero');
+            setIsAppointmentOpen(true);
+          }} />
           <AboutDoctor />
           <Treatments />
           <Timeline />
           <Testimonials />
           <ClinicInfo />
           <FAQ />
-          <CTASection onBookAppointment={() => setIsAppointmentOpen(true)} />
+          <CTASection onBookAppointment={() => {
+            analytics.trackButtonClick('book_appointment', 'cta_section');
+            setIsAppointmentOpen(true);
+          }} />
         </main>
-        <Footer onBookAppointment={() => setIsAppointmentOpen(true)} />
+        <Footer onBookAppointment={() => {
+          analytics.trackButtonClick('book_appointment', 'footer');
+          setIsAppointmentOpen(true);
+        }} />
         
         <AppointmentDialog 
           open={isAppointmentOpen} 
