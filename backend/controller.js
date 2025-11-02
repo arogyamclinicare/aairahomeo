@@ -2,13 +2,6 @@
 
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const router = express.Router();
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -18,6 +11,10 @@ const supabase = createClient(
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Telegram Bot configuration
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 // Appointment submission endpoint
 export const newAppointment = async (req, res) => {
