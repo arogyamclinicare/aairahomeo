@@ -44,6 +44,10 @@ A professional, fully-optimized website for Aaira Homeo Clinic built with modern
 - ✅ Rate limiting
 - ✅ Analytics & error tracking infrastructure ready
 
+**📧 Email Notifications:**
+- ✅ **EASIEST Option**: Use Make.com/Zapier (FREE, no coding) → See `EASIEST_EMAIL_NOTIFICATION_SETUP.md`
+- ✅ **Backend Option**: Node.js backend with Gmail → See `BACKEND_SETUP.md`
+
 **See `PRODUCTION_HANDOVER_CHECKLIST.md` for deployment instructions.**
 
 ---
