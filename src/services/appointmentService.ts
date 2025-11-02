@@ -1,7 +1,7 @@
 import { Appointment } from '../lib/supabase';
 
 // Backend API URL - change this to your deployed backend URL
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 /**
  * Service for handling appointment submissions
@@ -10,7 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 export class AppointmentService {
   /**
    * Submit appointment request via Node.js backend
-   * Backend will: 1) Save to Supabase, 2) Send email notification
+   * Backend will: 1) Save to Supabase, 2) Send email notification via Resend
    * @param appointment - Appointment data
    * @returns Promise with success status and message
    */
@@ -25,7 +25,7 @@ export class AppointmentService {
       }
 
       // Send to Node.js backend API
-      const response = await fetch(`${API_BASE_URL}/api/appointments`, {
+      const response = await fetch(`${API_BASE_URL}/newAppointment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,6 +36,7 @@ export class AppointmentService {
           email: appointment.email || null,
           age: appointment.age,
           problem: appointment.problem || null,
+          message: appointment.problem || null, // Support 'message' field too
           preferred_date: appointment.preferred_date || null,
           preferred_time: appointment.preferred_time || null,
         }),
@@ -46,12 +47,12 @@ export class AppointmentService {
       if (!response.ok) {
         return {
           success: false,
-          message: result.message || 'Failed to submit appointment. Please try again.'
+          message: result.error || result.message || 'Failed to submit appointment. Please try again.'
         };
       }
 
       return {
-        success: result.success,
+        success: result.success !== false,
         message: result.message || 'Appointment request submitted successfully! We will contact you within 24 hours.'
       };
 
