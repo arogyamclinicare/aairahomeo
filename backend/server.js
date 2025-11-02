@@ -63,7 +63,7 @@ app.post('/api/appointments', async (req, res) => {
 
     // Validate age
     const ageNum = parseInt(age);
-    if (isNaN(ageNum) {
+    if (isNaN(ageNum)) {
       return res.status(400).json({
         success: false,
         message: 'Age must be a valid number'
