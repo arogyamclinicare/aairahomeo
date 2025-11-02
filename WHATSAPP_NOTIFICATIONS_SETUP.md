@@ -2,6 +2,8 @@
 
 Get instant WhatsApp notifications when someone books an appointment on your website!
 
+> 💡 **Want something FREE?** Check out [EMAIL_NOTIFICATIONS_SETUP.md](./EMAIL_NOTIFICATIONS_SETUP.md) for **FREE email notifications** using Resend (3000 emails/month free)!
+
 ## 🎯 Quick Setup (Choose One Method)
 
 ### Option 1: Twilio WhatsApp API (Recommended - Easiest) ⭐
