@@ -151,7 +151,7 @@ supabase functions deploy send-email-notification
 
 1. Go to Supabase Dashboard → **SQL Editor**
 2. Click **New Query**
-3. Copy and paste this SQL:
+3. Copy **ONLY the SQL code below** (do NOT copy the ```sql markers at start/end):
 
 ```sql
 -- Enable http extension (if not already enabled)
@@ -195,8 +195,11 @@ CREATE TRIGGER trigger_notify_email_on_appointment
   EXECUTE FUNCTION notify_email_on_appointment();
 ```
 
-4. Click **Run** (or press Ctrl+Enter)
-5. ✅ Done!
+4. **⚠️ IMPORTANT:** Make sure you copied ONLY the SQL code (not the ```sql markers!)
+5. Click **Run** (or press Ctrl+Enter)
+6. ✅ Done!
+
+**💡 Tip:** You can also open `supabase/migrations/003_create_email_notification_trigger.sql` in your project and copy from there - it's clean SQL without markdown!
 
 ---
 
