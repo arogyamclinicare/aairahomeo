@@ -22,7 +22,7 @@ export const Image: React.FC<ImageProps> = ({
   src,
   alt,
   className = '',
-  fallback = '/images/logo final.png',
+  fallback = '/images/logo-final.png',
   loading = 'lazy',
   priority = false,
   ...props
