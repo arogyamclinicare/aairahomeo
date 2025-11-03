@@ -4,7 +4,7 @@ import { GraduationCap, Building2, Users } from 'lucide-react';
 
 const milestones = [
   {
-    year: '2010',
+    year: '2012',
     icon: GraduationCap,
     title: 'Medical Education',
     description: 'Completed medical education in Classical Homeopathy, earning BHMS degree'
@@ -13,7 +13,7 @@ const milestones = [
     year: '2012',
     icon: Building2,
     title: 'Clinic Established',
-    description: 'Founded Aairah Homeo Clinic with vision for holistic healing'
+    description: 'Founded Aaira Homeo Clinic with vision for holistic healing'
   },
   {
     year: '2016',
