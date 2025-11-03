@@ -16,6 +16,20 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Root endpoint - friendly API info page
+app.get('/', (req, res) => {
+  res.json({
+    service: 'Aaira Homeo Clinic - Appointment API',
+    status: 'online',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      submitAppointment: '/newAppointment (POST)'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Appointment submission endpoint
 app.post('/newAppointment', newAppointment);
 
