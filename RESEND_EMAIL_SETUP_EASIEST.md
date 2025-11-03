@@ -107,22 +107,29 @@ supabase functions deploy send-email-notification
 3. Copy and paste this SQL:
 
 ```sql
+-- Enable http extension (if not already enabled)
+CREATE EXTENSION IF NOT EXISTS http;
+
 -- Create trigger for email notifications
 CREATE OR REPLACE FUNCTION notify_email_on_appointment()
 RETURNS TRIGGER AS $$
 DECLARE
   webhook_url TEXT := 'https://gzdnefbqxmgjdoztozov.supabase.co/functions/v1/send-email-notification';
   payload JSONB;
+  response http_response;
 BEGIN
   payload := jsonb_build_object('record', row_to_json(NEW));
   
-  PERFORM net.http_post(
-    url := webhook_url,
-    headers := jsonb_build_object(
-      'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key', true),
-      'Content-Type', 'application/json'
-    ),
-    body := payload::text
+  SELECT * INTO response FROM http_post(
+    webhook_url,
+    payload::text,
+    'application/json'::text,
+    ARRAY[
+      http_header(
+        'Authorization',
+        'Bearer ' || current_setting('app.settings.service_role_key', true)
+      )
+    ]
   );
   
   RETURN NEW;

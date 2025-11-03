@@ -2,6 +2,9 @@
 -- This trigger automatically calls the Edge Function when a new appointment is inserted
 -- Uses Resend.com (FREE - 3000 emails/month)
 
+-- Enable http extension if not already enabled
+CREATE EXTENSION IF NOT EXISTS http;
+
 -- Create a function that will call the Edge Function
 CREATE OR REPLACE FUNCTION notify_email_on_appointment()
 RETURNS TRIGGER AS $$
@@ -15,7 +18,7 @@ BEGIN
     'record', row_to_json(NEW)
   );
 
-  -- Call the Edge Function
+  -- Call the Edge Function using http extension
   SELECT * INTO response FROM http_post(
     webhook_url,
     payload::text,
@@ -49,8 +52,4 @@ CREATE TRIGGER trigger_notify_email_on_appointment
 
 -- Grant necessary permissions
 GRANT USAGE ON SCHEMA http TO postgres;
-
--- Note: The http extension might need to be enabled
--- Run this if http extension is not available:
--- CREATE EXTENSION IF NOT EXISTS http;
 
