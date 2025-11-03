@@ -17,12 +17,13 @@
 
 ---
 
-### 2. Update Vercel Frontend (2 mins)
+### 2. Update Vercel Frontend (2 mins) ⚠️ CRITICAL!
 
 1. Go to: **https://vercel.com/dashboard**
 2. Your project → Settings → Environment Variables
-3. Add: `VITE_API_URL` = `https://your-railway-url.up.railway.app`
-4. Deployments → Redeploy latest
+3. Add: `VITE_API_URL` = `https://your-render-url.onrender.com` (or Railway URL)
+4. **IMPORTANT:** Go to Deployments → Click "⋯" on latest → **Redeploy**
+5. Wait for redeployment to finish (1-2 min)
 
 ---
 
