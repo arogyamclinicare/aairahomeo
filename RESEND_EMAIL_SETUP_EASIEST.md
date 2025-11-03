@@ -74,27 +74,74 @@ supabase secrets set --project-ref gzdnefbqxmgjdoztozov \
 
 ---
 
-### Step 3: Deploy Edge Function (1 minute)
+### Step 3: Deploy Edge Function (1 minute - Choose One Option)
 
-**Already deployed!** ✅
+**✅ The Edge Function code is ready in your project!** Now you need to deploy it.
 
-The email function is already at: `supabase/functions/send-email-notification/`
+**Choose EITHER Option A (Dashboard - No CLI) OR Option B (CLI):**
 
-If you need to update it:
+---
 
-```bash
-# Install Supabase CLI (if not installed)
+#### **Option A: Deploy via Supabase Dashboard (EASIEST - No CLI needed!)** ⭐
+
+1. Go to Supabase Dashboard → **Edge Functions**
+2. Click **Create a new function**
+3. **Function name:** `send-email-notification`
+4. **Copy the code** from: `supabase/functions/send-email-notification/index.ts`
+5. **Paste it** in the editor
+6. Click **Deploy**
+7. ✅ Done!
+
+---
+
+#### **Option B: Deploy via Supabase CLI (If you prefer CLI)**
+
+**First, install Supabase CLI:**
+
+#### **Windows Installation:**
+
+**Option 1: Using npm (Easiest - if you have Node.js installed)**
+```powershell
+# Open PowerShell
 npm install -g supabase
 
-# Login
-supabase login
+# Verify installation
+supabase --version
+```
 
-# Link project
+**Option 2: Using Scoop (If you have Scoop package manager)**
+```powershell
+# Add Supabase bucket
+scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+
+# Install Supabase CLI
+scoop install supabase
+```
+
+**Option 3: Direct Download**
+1. Go to [Supabase CLI Releases](https://github.com/supabase/cli/releases)
+2. Download `supabase_windows_amd64.zip` for Windows
+3. Extract and add to your PATH
+
+---
+
+#### **After Installing CLI (if needed):**
+
+```bash
+# Login to Supabase
+supabase login
+# (Opens browser for authentication)
+
+# Link your project
 supabase link --project-ref gzdnefbqxmgjdoztozov
 
-# Deploy function
+# Deploy the email function
 supabase functions deploy send-email-notification
 ```
+
+---
+
+**⚠️ Note:** **Option A (Dashboard) is easier!** No CLI installation needed. Only use CLI if you prefer command line tools.
 
 ---
 
