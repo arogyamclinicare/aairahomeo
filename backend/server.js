@@ -1,12 +1,13 @@
 // Node.js Backend Server
 // Handles appointment submissions and sends email notifications
 
+// Load environment variables FIRST before importing anything
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import { newAppointment } from './controller.js';
-
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
