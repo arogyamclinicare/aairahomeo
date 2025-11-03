@@ -80,8 +80,8 @@ export const newAppointment = async (req, res) => {
     // Send email notification
     try {
       const resendClient = getResendClient();
-      await resendClient.emails.send({
-        from: "Aaira Homeo Clinic <onboarding@resend.dev>", // Use Resend's default domain
+      const emailResponse = await resendClient.emails.send({
+        from: "onboarding@resend.dev", // Simplified - Resend default domain
         to: [process.env.ADMIN_EMAIL || "aairahomeobihar@gmail.com"], // You receive email here
         subject: "🩺 New Appointment Enquiry",
         html: `
@@ -104,7 +104,11 @@ export const newAppointment = async (req, res) => {
           </div>
         `
       });
+      
       console.log("✅ Email sent successfully");
+      console.log("📧 Resend Response:", JSON.stringify(emailResponse, null, 2));
+      console.log("📬 Email ID:", emailResponse?.id || "N/A");
+      console.log("📬 Check Resend Dashboard: https://resend.com/emails");
     } catch (emailError) {
       console.error("Email error:", emailError);
       // Don't fail the request if email fails
