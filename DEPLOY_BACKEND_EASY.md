@@ -54,10 +54,10 @@
    SUPABASE_URL=https://gzdnefbqxmgjdoztozov.supabase.co
    ```
    ```
-   SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6ZG5lZmJxeG1namRvenRvem92Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTgwNzIwOSwiZXhwIjoyMDc3MzgzMjA5fQ.Eu5JRErk52bgGUUSt30WdBAVKtbFaSDIaqwXUrWQiaM
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
    ```
    ```
-   RESEND_API_KEY=re_UQ5iCcq9_PakpPFeBy7gF7F75MtbiSBNW
+   RESEND_API_KEY=re_your_resend_api_key_here
    ```
    ```
    ADMIN_EMAIL=aairahomeobihar@gmail.com
