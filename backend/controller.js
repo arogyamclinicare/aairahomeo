@@ -3,14 +3,34 @@
 import { Resend } from "resend";
 import { createClient } from "@supabase/supabase-js";
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+// Lazy initialization - create clients when needed (after dotenv loads)
+let supabase = null;
+let resend = null;
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getSupabaseClient() {
+  if (!supabase) {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error('Supabase credentials not configured. Check your .env file.');
+    }
+    
+    supabase = createClient(supabaseUrl, supabaseKey);
+  }
+  return supabase;
+}
+
+function getResendClient() {
+  if (!resend) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error('Resend API key not configured. Check your .env file.');
+    }
+    resend = new Resend(apiKey);
+  }
+  return resend;
+}
 
 // Telegram Bot configuration
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
@@ -42,7 +62,8 @@ export const newAppointment = async (req, res) => {
     };
 
     // Insert into Supabase
-    const { data, error } = await supabase
+    const supabaseClient = getSupabaseClient();
+    const { data, error } = await supabaseClient
       .from("appointments")
       .insert([appointmentData])
       .select()
@@ -58,9 +79,10 @@ export const newAppointment = async (req, res) => {
 
     // Send email notification
     try {
-      await resend.emails.send({
-        from: "Aaira Homeo Clinic <onboarding@resend.dev>", // Resend default domain
-        to: [process.env.ADMIN_EMAIL], // You receive email here
+      const resendClient = getResendClient();
+      await resendClient.emails.send({
+        from: "Aaira Homeo Clinic <onboarding@resend.dev>", // Use Resend's default domain
+        to: [process.env.ADMIN_EMAIL || "aairahomeobihar@gmail.com"], // You receive email here
         subject: "🩺 New Appointment Enquiry",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
