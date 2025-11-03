@@ -43,7 +43,7 @@
 - **Branch:** `main`
 - **Root Directory:** `backend` ⚠️ **IMPORTANT!**
 - **Runtime:** `Node`
-- **Build Command:** `npm install`
+- **Build Command:** Leave empty OR `npm install` (Render will auto-run npm install)
 - **Start Command:** `npm start`
 - **Plan:** **Free** (select free tier)
 
